@@ -2,17 +2,20 @@ import requests
 import json
 from datetime import date
 
-import os
-from dotenv import load_dotenv
+# import os
+# from dotenv import load_dotenv
+# load_dotenv(dotenv_path="./.env")
 
-load_dotenv(dotenv_path="./.env")
+from airflow.decorators import task
+from airflow.models import Variable
 
-API_KEY = os.getenv("API_KEY")
 
-CHANNEL_HANDLE = "computerphile"
-
+API_KEY = Variable.get("API_KEY")
+CHANNEL_HANDLE = Variable.get("CHANNEL_HANDLE")
 maxResults = 50
 
+
+@task
 def get_playlist_id():
 
     try:
@@ -39,6 +42,7 @@ def get_playlist_id():
         raise e
 
 
+@task
 def get_video_ids(playlistId):
 
     video_ids = []
@@ -77,6 +81,7 @@ def get_video_ids(playlistId):
         raise e
 
 
+@task
 def extract_video_data(video_ids):
 
     extracted_data = []
@@ -103,17 +108,17 @@ def extract_video_data(video_ids):
                 contentDetails = item["contentDetails"]
                 statistics = item["statistics"]
 
-            video_data = {
-                "video_id": video_id,
-                "title": snippet["title"],
-                "publishedAt": snippet["publishedAt"],
-                "duration": contentDetails["duration"],
-                "viewCount": statistics.get("viewCount", None),
-                "likeCount": statistics.get("likeCount", None),
-                "commentCount": statistics.get("commentCount", None),
-            }
+                video_data = {
+                    "video_id": video_id,
+                    "title": snippet["title"],
+                    "publishedAt": snippet["publishedAt"],
+                    "duration": contentDetails["duration"],
+                    "viewCount": statistics.get("viewCount", None),
+                    "likeCount": statistics.get("likeCount", None),
+                    "commentCount": statistics.get("commentCount", None),
+                }
 
-            extracted_data.append(video_data)
+                extracted_data.append(video_data)
 
         return extracted_data
 
@@ -121,8 +126,9 @@ def extract_video_data(video_ids):
         raise e
 
 
+@task
 def save_to_json(extracted_data):
-    file_path = f"./data/yt_data{date.today()}.json"
+    file_path = f"./data/YT_data_{date.today()}.json"
 
     with open(file_path, "w", encoding="utf-8") as json_outfile:
         json.dump(extracted_data, json_outfile, indent=4, ensure_ascii=False)
