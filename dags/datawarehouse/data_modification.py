@@ -1,10 +1,10 @@
- import logging
- 
+import logging
 
- logger = logging.getLogger(__name__)
- table = "yt_api"
+logger = logging.getLogger(__name__)
+table = "yt_api"
 
- def insert_rows(cur,conn,schema,row):
+
+def insert_rows(cur, conn, schema, row):
 
     try:
 
@@ -39,6 +39,7 @@
     except Exception as e:
         logger.error(f"Error inserting row with Video_ID: {row[video_id]}")
         raise e
+
 
 def update_rows(cur, conn, schema, row):
 
@@ -100,3 +101,4 @@ def delete_rows(cur, conn, schema, ids_to_delete):
     except Exception as e:
         logger.error(f"Error deleting rows with Video_IDs: {ids_to_delete} - {e}")
         raise e
+
