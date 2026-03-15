@@ -5,6 +5,6 @@ FROM apache/airflow:${AIRFLOW_VERSION}-python${PYTHON_VERSION}
 
 ENV AIRFLOW_HOME=/opt/airflow
 
-COPY --chown=airflow:root requirements.txt /opt/airflow/requirements.txt
+COPY requirements.txt /
 
-RUN pip install --no-cache-dir "apache-airflow==${AIRFLOW_VERSION}" -r /opt/airflow/requirements.txt
+RUN pip install --no-cache-dir "apache-airflow==${AIRFLOW_VERSION}" -r /requirements.txt
