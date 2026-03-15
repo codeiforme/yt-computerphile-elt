@@ -6,7 +6,7 @@ It uses Python, Docker, PostgreSQL, and Apache Airflow, testing and CI/CD.
 
 ## Dataset
 
-The dataset comes from the **YouTube Data API**, using videos from the **Computerphile** channel as an example.
+The dataset comes from the YouTube Data API, using videos from the Computerphile channel as an example.
 
 ## Project Overview
 
@@ -51,7 +51,7 @@ Airflow runs inside Docker using the docker-compose setup provided by the Airflo
 
 This image is automatically:
 
-1. Built through GitHub Actions**
+1. Built through GitHub Actions
 2. Pushed to Docker Hub
 3. Used by docker-compose to run the Airflow services.
 
